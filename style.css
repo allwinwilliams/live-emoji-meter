@@ -1,0 +1,13 @@
+body{
+  padding: 0;
+  margin: 0;
+  font-family: sans-serif;
+}
+.title-note{
+  text-align: center;
+  margin: 2em 0;
+}
+
+emoji{
+  font-size: 12px;
+}
