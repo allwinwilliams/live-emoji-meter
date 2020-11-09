@@ -42,7 +42,26 @@ fetch(`${SNAPSHOT_URL}/v1/rankings`)
   })
   .catch(err => console.log(err));
 
-  $('emoji').hover(()=>{
-    var id = this.attr('id');
-    console.log(id);
-  })
+
+$('emoji').hover((event) => {
+  console.log("HOVER");
+  let id = $(event.target).attr('id');
+  fetch(`${SNAPSHOT_URL}/v1/details/${id}`)
+    .then(response => response.json())
+    .then(data => {
+      $("#current-emoji-details").show();
+      $("#current-emoji-details #emoji").text(`Emoji: ${data.char}`);
+      $("#current-emoji-details #name").text(`Name: ${data.name}`);
+      $("#current-emoji-details #count").text(`Count: ${emoji_store[id].count}`);
+      $("#current-emoji-details #total-count").text(`Total count: ${data.score}`);
+      $("#current-emoji-details #recent-tweets").html(
+        _.take(data.recent_tweets, 3)
+        .map(tweet => `<li>${tweet.screen_name} - @${tweet.screen_name} - ${tweet.text}</li>`)
+      );
+    });
+});
+
+$('emoji').mouseout(() => {
+  console.log("MOUSE OUT");
+  $("#current-emoji-details").hide();
+});
