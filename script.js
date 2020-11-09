@@ -36,6 +36,7 @@ fetch(`${SNAPSHOT_URL}/v1/rankings`)
             emoji_store[k].count += v;
             emoji_store[k].score += v;
             total += v;
+            $("#total-count").text(total);
         }
     }
   })
