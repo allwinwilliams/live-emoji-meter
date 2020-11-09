@@ -1,8 +1,6 @@
 const SNAPSHOT_URL = "https://api.emojitracker.com";
 const STREAM_URL = "https://stream.emojitracker.com";
 
-// const RECENT_URL = "/v1/details/:id";
-
 var total = 0;
 let emoji_store = {};
 
@@ -25,19 +23,19 @@ fetch(`${SNAPSHOT_URL}/v1/rankings`)
     let evsource = new EventSource(`${STREAM_URL}/subscribe/eps`);
     evsource.onmessage = function(event) {
         const updates = JSON.parse(event.data);
-        for (const [k, v] of Object.entries(updates)) {
-            // console.log(`Emoji with id ${k} got score increase of ${v}`);
-            if(emoji_store[k].count == 0){
-              $("#canvas").append(`<emoji id="${emoji_store[k].id}">${emoji_store[k].char}</emoji>`);
+        // console.log(updates);
+        _.mapKeys(updates, (value, key) =>{
+            if(emoji_store[key].count == 0){
+              $("#canvas").append(`<emoji id="${emoji_store[key].id}">${emoji_store[key].char}</emoji>`);
             }
-            var font_size = parseInt($(`#${emoji_store[k].id}`).css("font-size"));
-            font_size = (font_size + v) + "px";
-            $(`#${emoji_store[k].id}`).css({'font-size':font_size});
-            emoji_store[k].count += v;
-            emoji_store[k].score += v;
-            total += v;
+            var font_size = parseInt($(`#${emoji_store[key].id}`).css("font-size"));
+            font_size = (font_size + value) + "px";
+            $(`#${emoji_store[key].id}`).css({'font-size':font_size});
+            emoji_store[key].count += value;
+            emoji_store[key].score += value;
+            total += value;
             $("#total-count").text(total);
-        }
+        })
     }
   })
   .catch(err => console.log(err));
