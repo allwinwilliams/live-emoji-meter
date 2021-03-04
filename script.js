@@ -7,6 +7,9 @@ let emoji_store = {};
 fetch(`${SNAPSHOT_URL}/v1/status`)
   .then(response => {
     console.log(`${response.status} - API is working fine...`);
+  })
+  .catch(error =>{
+    console.error(`Error in API: ${error}`)
   });
 
 fetch(`${SNAPSHOT_URL}/v1/rankings`)
